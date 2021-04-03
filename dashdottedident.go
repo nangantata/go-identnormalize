@@ -22,14 +22,11 @@ func DashDottedIdentifier(originalIdent string, maxIdentifierLength int) string 
 	return string(result)
 }
 
-// StrictIdentifierPath normalize given originalIdentPath into normalizedIdentPath and normalizedFragments
+// DashDottedIdentifierPath normalize given originalIdentPath into normalizedIdentPath and normalizedFragments
 // with each fragement matches pattern `[a-z_]([a-z0-9_-.]*)`.
 func DashDottedIdentifierPath(
 	originalIdentPath string, separatorCh rune, maxIdentifierPathLength int,
 	identTransFunc IdentifierTransformFunc) (normalizedIdentPath string, normalizedFragments []string) {
-	if maxIdentifierPathLength <= 0 {
-		return
-	}
 	if identTransFunc == nil {
 		identTransFunc = noopIdentTransform
 	}
@@ -38,6 +35,9 @@ func DashDottedIdentifierPath(
 	resultFrags := make([]rune, 0, lenOrigIdentPath)
 	normalizedFragments = make([]string, 0, 4)
 	for _, ch := range originalIdentPath {
+		if len(resultPath) >= maxIdentifierPathLength {
+			break
+		}
 		if ch == separatorCh {
 			if len(resultFrags) == 0 {
 				continue
@@ -55,16 +55,13 @@ func DashDottedIdentifierPath(
 		}
 		resultFrags = append(resultFrags, ch)
 		resultPath = append(resultPath, ch)
-		if len(resultPath) >= maxIdentifierPathLength {
-			break
-		}
 	}
 	if len(resultFrags) > 0 {
 		frag := identTransFunc(string(resultFrags))
 		normalizedFragments = append(normalizedFragments, frag)
 	}
-	if resultPath[len(resultPath)-1] == separatorCh {
-		resultPath = resultPath[:len(resultPath)-1]
+	if resultSize := len(resultPath); (resultSize > 0) && (resultPath[resultSize-1] == separatorCh) {
+		resultPath = resultPath[:resultSize-1]
 	}
 	normalizedIdentPath = identTransFunc(string(resultPath))
 	return
