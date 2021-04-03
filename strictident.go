@@ -38,6 +38,9 @@ func StrictIdentifierPath(
 	resultFrags := make([]rune, 0, lenOrigIdentPath)
 	normalizedFragments = make([]string, 0, 4)
 	for _, ch := range originalIdentPath {
+		if len(resultPath) >= maxIdentifierPathLength {
+			break
+		}
 		if ch == separatorCh {
 			if len(resultFrags) == 0 {
 				continue
@@ -55,16 +58,13 @@ func StrictIdentifierPath(
 		}
 		resultFrags = append(resultFrags, ch)
 		resultPath = append(resultPath, ch)
-		if len(resultPath) >= maxIdentifierPathLength {
-			break
-		}
 	}
 	if len(resultFrags) > 0 {
 		frag := identTransFunc(string(resultFrags))
 		normalizedFragments = append(normalizedFragments, frag)
 	}
-	if resultPath[len(resultPath)-1] == separatorCh {
-		resultPath = resultPath[:len(resultPath)-1]
+	if resultSize := len(resultPath); (resultSize > 0) && (resultPath[resultSize-1] == separatorCh) {
+		resultPath = resultPath[:resultSize-1]
 	}
 	normalizedIdentPath = identTransFunc(string(resultPath))
 	return
