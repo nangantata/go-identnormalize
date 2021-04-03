@@ -4,8 +4,8 @@ import (
 	"unicode"
 )
 
-// StrictIdentifier normalize given original identifier into identifier
-// matches pattern `[a-z]([a-z0-9]*)`.
+// AlphabetNumberOnlyIdentifier normalize given original identifier into identifier
+// matches pattern `[a-zA-Z]([a-zA-Z0-9]*)`.
 // Characters out of acceptable range will be removed.
 func AlphabetNumberOnlyIdentifier(originalIdent string, maxIdentifierLength int) string {
 	result := make([]rune, 0, len(originalIdent))
@@ -24,8 +24,8 @@ func AlphabetNumberOnlyIdentifier(originalIdent string, maxIdentifierLength int)
 	return string(result)
 }
 
-// StrictIdentifierPath normalize given originalIdentPath into normalizedIdentPath and normalizedFragments
-// with each fragement matches pattern `[a-z]([a-z0-9]*)`.
+// AlphabetNumberOnlyIdentifierPath normalize given originalIdentPath into normalizedIdentPath and normalizedFragments
+// with each fragement matches pattern `[a-zA-Z]([a-zA-Z0-9]*)`.
 // Characters out of acceptable range will be removed.
 func AlphabetNumberOnlyIdentifierPath(
 	originalIdentPath string, separatorCh rune, maxIdentifierPathLength int,

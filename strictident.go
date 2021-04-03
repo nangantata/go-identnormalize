@@ -5,7 +5,7 @@ import (
 )
 
 // StrictIdentifier normalize given original identifier into identifier
-// matches pattern `[a-z_]([a-z0-9_]*)`.
+// matches pattern `[a-zA-Z_]([a-zA-Z0-9_]*)`.
 func StrictIdentifier(originalIdent string, maxIdentifierLength int) string {
 	result := make([]rune, 0, len(originalIdent))
 	for idx, ch := range originalIdent {
@@ -23,7 +23,7 @@ func StrictIdentifier(originalIdent string, maxIdentifierLength int) string {
 }
 
 // StrictIdentifierPath normalize given originalIdentPath into normalizedIdentPath and normalizedFragments
-// with each fragement matches pattern `[a-z_]([a-z0-9_]*)`.
+// with each fragement matches pattern `[a-zA-Z_]([a-zA-Z0-9_]*)`.
 func StrictIdentifierPath(
 	originalIdentPath string, separatorCh rune, maxIdentifierPathLength int,
 	identTransFunc IdentifierTransformFunc) (normalizedIdentPath string, normalizedFragments []string) {
